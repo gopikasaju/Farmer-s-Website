@@ -1,0 +1,208 @@
+{% extends 'buyr/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Search</title>
+    <style>
+        /* General styles */
+        body {
+            background-color: #fff;
+            /* White background */
+            color: #000;
+            /* Black text */
+            font-family: Arial, sans-serif;
+            /* Use Arial font */
+            margin: 0;
+            /* Remove default margin */
+            padding: 0;
+            /* Remove default padding */
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 960px;
+            /* Maximum width for content */
+            margin: 0 auto;
+            /* Center align content */
+            padding: 20px;
+            /* Add some padding */
+            margin-bottom: 50px;
+        }
+
+        /* Heading styles */
+        h1 {
+            color: #FFD700;
+            /* Yellow heading */
+            text-align: center;
+            /* Center align heading */
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        /* Search bar styles */
+        #searchBar {
+            width: 100%;
+            /* Full width */
+            padding: 10px;
+            /* Add padding */
+            border: 1px solid #000;
+            /* Black border */
+            border-radius: 5px;
+            /* Rounded corners */
+            margin-bottom: 20px;
+            /* Add some space at the bottom */
+            box-sizing: border-box;
+            /* Include padding and border in width calculation */
+        }
+
+        /* Search button styles */
+        #searchBtn {
+            background-color: #FFD700;
+            /* Yellow background */
+            color: #000;
+            /* Black text */
+            border: none;
+            /* Remove border */
+            padding: 10px 20px;
+            /* Add padding */
+            border-radius: 5px;
+            /* Rounded corners */
+            cursor: pointer;
+            /* Add pointer cursor */
+        }
+
+        /* Search button hover effect */
+        #searchBtn:hover {
+            background-color: #FFA500;
+            /* Darker yellow background on hover */
+        }
+
+        /* Search results styles */
+        #searchResults {
+            list-style-type: none;
+            /* Remove default list style */
+            padding: 0;
+            /* Remove default padding */
+            margin: 0;
+            /* Remove default margin */
+        }
+
+        #searchResults li {
+            padding: 10px;
+            /* Add padding */
+            border-bottom: 1px solid #000;
+            /* Black border bottom */
+            background-color: #FFFFE0;
+            /* Light yellow background */
+        }
+
+        /* Alternate background color for search results */
+        #searchResults li:nth-child(even) {
+            background-color: #FFFACD;
+            /* Lighter yellow background */
+        }
+
+        .addToCartBtn {
+            background-color: #FFD700;
+            /* Yellow background */
+            color: #000;
+            /* Black text */
+            border: none;
+            /* Remove border */
+            padding: 8px 16px;
+            /* Add padding */
+            border-radius: 5px;
+            /* Rounded corners */
+            cursor: pointer;
+            /* Add pointer cursor */
+        }
+
+        /* Add to cart button hover effect */
+        .addToCartBtn:hover {
+            background-color: #FFA500;
+            /* Darker yellow background on hover */
+        }
+
+        /* Suggestion form styles */
+        .suggestionForm {
+            margin-top: 20px;
+            /* Add some space at the top */
+        }
+
+        .suggestionForm input[type="text"],
+        .suggestionForm textarea {
+            width: 100%;
+            /* Full width */
+            padding: 10px;
+            /* Add padding */
+            margin-bottom: 10px;
+            /* Add some space at the bottom */
+            box-sizing: border-box;
+            /* Include padding and border in width calculation */
+        }
+
+        .suggestionForm textarea {
+            height: 100px;
+            /* Set textarea height */
+        }
+
+        .suggestionForm button[type="submit"] {
+            background-color: #FFD700;
+            /* Yellow background */
+            color: #000;
+            /* Black text */
+            border: none;
+            /* Remove border */
+            padding: 10px 20px;
+            /* Add padding */
+            border-radius: 5px;
+            /* Rounded corners */
+            cursor: pointer;
+            /* Add pointer cursor */
+        }
+
+        /* Suggestion form button hover effect */
+        .suggestionForm button[type="submit"]:hover {
+            background-color: #FFA500;
+            /* Darker yellow background on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Product Search</h1>
+        <form action="{% url 'search_products' %}" method="get">
+            <div class="">
+                <input type="text" id="searchBar" name="q" value="{{ query }}" placeholder="Search for products...">
+                <button id="searchBtn" class="fa fa-search" type="submit" style="margin-bottom: 50px;">search</button>
+            </div>
+
+
+            <li class="search"><a href="{% url 'search_products' %}"><i></i></a></li>
+        </form>
+        <ul id="searchResults">
+            {% for product in products %}
+            <li>{{ product.name }} - {{ product.price }}</li>
+            {% empty %}
+            <li>No products found.</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Suggestion form -->
+        <form class="suggestionForm" action="{% url 'product_search' %}" method="post">
+            {% csrf_token %}
+            <label for="suggestion">Suggestion:</label>
+            <textarea id="suggestion" name="suggestion" placeholder="Enter your suggestion..."></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>
+{% endblock %}

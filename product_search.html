@@ -1,0 +1,114 @@
+
+{% extends 'buyr/base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <style>
+            
+          
+            {% if query %}
+                <h2>Search Results for "{{ query }}"</h2>
+                {% if results %}
+                    <ul>
+                        {% for product in results %}
+                            <li>{{ product.name }} - {{ product.description }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No results found.</p>
+                {% endif %}
+            {% endif %}
+            
+            </body>
+            </html>
+            
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        .search-results {
+            list-style: none;
+            padding: 0;
+        }
+        .search-results li {
+            margin-bottom: 10px;
+        }
+        .suggestions {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product Search</h1>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search products...">
+            <button onclick="search()">Search</button>
+        </div>
+        <ul class="search-results" id="searchResults">
+            <!-- Results will be displayed here -->
+        </ul>
+        <div class="suggestions" id="suggestions" style="display: none;">
+            <p>Sorry, the item you searched for is not available.</p>
+            <p>Here are some suggestions:</p>
+            <ul id="suggestedItems">
+                <!-- Suggestions will be displayed here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function search() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var products = ['product1', 'product2', 'product3']; // Replace with your actual product list
+
+            var found = false;
+            var searchResults = document.getElementById('searchResults');
+            var suggestionsDiv = document.getElementById('suggestions');
+            var suggestedItems = document.getElementById('suggestedItems');
+
+            // Clear previous search results and suggestions
+            searchResults.innerHTML = '';
+            suggestedItems.innerHTML = '';
+            suggestionsDiv.style.display = 'none';
+
+            products.forEach(function(product) {
+                if (product.toLowerCase().includes(searchInput)) {
+                    var li = document.createElement('li');
+                    li.textContent = product;
+                    searchResults.appendChild(li);
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                // If no matching products found, show suggestions
+                suggestionsDiv.style.display = 'block';
+                var suggestions = suggestProducts(searchInput);
+                suggestions.forEach(function(suggestion) {
+                    var li = document.createElement('li');
+                    li.textContent = suggestion;
+                    suggestedItems.appendChild(li);
+                });
+            }
+        }
+
+        // Replace this function with your actual suggestion logic
+        function suggestProducts(searchInput) {
+            // Example suggestion logic, you can replace it with your own
+            var suggestions = ['suggestion1', 'suggestion2', 'suggestion3'];
+            return suggestions;
+        }
+    </script>
+</body>
+</html>
+{% endblock %}  
